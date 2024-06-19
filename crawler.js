@@ -315,11 +315,11 @@ async function fetchAccounts(){
 
 }
 async2.series([
-  fetchAccounts
- //// generateSchema,
-  //dumpData,
- // generateIssuesSchema,
-  //dumpIssuesData
+  fetchAccounts,
+  generateSchema,
+  dumpData,
+  generateIssuesSchema,
+  dumpIssuesData
 ], function (err, results) {
   console.log("Crawler End Now!");
 }); 
