@@ -4,6 +4,7 @@ var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const User = db.user;
 const Role = db.role; 
+const userAccounts = db.userAccounts;
 
 exports.getAll = (req, res) => {
   User.findAll()
@@ -56,9 +57,9 @@ exports.changePassword = (req, res) => {
   User.findByPk(userId.id)
     .then(user => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "User Not Found." });
       }
-      console.log(req.body.current_password);
+     // console.log(req.body.current_password);
       var passwordIsValid = bcrypt.compareSync(
         req.body.current_password,
         user.password
@@ -104,6 +105,38 @@ exports.register = (req, res) => {
 
   
 };
+
+exports.accountsPermissions = (req, res) => {  
+ // console.log(req.body);
+ // return;
+ 
+  if(req.body.accounts_permissions.split(',').length > 0){
+    try {
+      for(accountId of req.body.accounts_permissions.split(',')) {  
+        userAccounts.findOne({where: {'account_id' : accountId, 'user_id' : req.body.user_id}})
+        .then(user => {
+          if (!user) {
+            userAccounts.create({    
+              user_id: req.body.user_id,
+              account_id: accountId
+              });
+          } else {
+            userAccounts.update({
+              user_id: req.body.user_id,
+              account_id: accountId
+            }, { where: {'account_id' : accountId, 'user_id' : req.body.user_id} });
+            
+          }
+        });    
+      };
+      return res.status(200).send({ message: "User Accounts Permissions Saved Successfully!" });
+    } catch (error) {
+      return res.status(500).send({ message: error.message });
+    }
+  } else {
+    res.status(500).send({ message: "No Account ID select" });
+  }
+}
 
 exports.update = (req, res) => {  
   User.update({

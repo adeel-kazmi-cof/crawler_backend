@@ -15,6 +15,7 @@ module.exports = function(app) {
   app.post("/api/users", controller.register);
   app.put("/api/users/:id", controller.update);
   app.delete("/api/users/:id", controller.delete);
+  app.put("/api/accounts-permissions", controller.accountsPermissions);
   app.get("/api/profile", controller.getProfile);
   app.put("/api/change-password", controller.changePassword);
 

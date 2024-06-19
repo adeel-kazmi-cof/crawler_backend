@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "crawl": "node crawler.js"
   },
   "author": "K@zmi",
   "license": "ISC",

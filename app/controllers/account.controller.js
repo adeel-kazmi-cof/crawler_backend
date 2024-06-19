@@ -59,15 +59,13 @@ exports.register = (req, res) => {
       repeat_every: req.body.formDataFields.repeat_every,
       start_time: req.body.formDataFields.start_time,
       status: req.body.formDataFields.status
-        }, { where: { id: req.params.id } })
+    }, { where: { id: req.params.id } })
         .then(user => {
             return res.status(200).send({ message: "Account Updated Successfully!" });
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
         });
-    
-      
     };
 exports.delete = (req, res) => {  
     Account.destroy({ where: { id: req.params.id } })
